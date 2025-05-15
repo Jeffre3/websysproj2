@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Trade - Serpent Market</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .trade-hero {
+            background: linear-gradient(to right, #2b2b2b, #1a1a1a);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .trade-hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .trade-form-wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .trade-form-wrapper p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        form input[type="text"],
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-top: 4px;
+        }
+
+        form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        form button {
+            margin-top: 25px;
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a class="logo" href="{% url 'home' %}">Serpent Market</a>
+        <ul class="nav-list">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'marketplace' %}">Marketplace</a></li>
+            <li><a href="{% url 'sell' %}">Sell</a></li>
+            <li><a href="{% url 'trade' %}">Trade</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="trade-hero">
+    <h1>Trade Items</h1>
+    <p>Propose a trade and connect with other serpent enthusiasts!</p>
+</section>
+
+<!-- Form Section -->
+<section class="trade-form-wrapper wrapper_whiteshadow">
+    <p>Looking to trade something? Fill out the form below with the details of the item you're offering and what you'd like in return.</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="item">Item You Want to Trade</label>
+        <input type="text" id="item" name="item" required>
+
+        <label for="description">Item Description</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="want_item">Item You Want in Exchange</label>
+        <input type="text" id="want_item" name="want_item" required>
+
+        <label for="location">Your Location</label>
+        <input type="text" id="location" name="location" required>
+
+        <button type="submit" class="login-button">Submit Trade Offer</button>
+    </form>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 Serpent Market. All rights reserved.</p>
+</footer>
+
+<script src="{% static 'js/mobile-navbar.js' %}"></script>
+</body>
+</html>

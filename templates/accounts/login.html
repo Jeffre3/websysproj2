@@ -1,0 +1,141 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .wrapper_lightblue {
+            background-color: #f0f8ff;
+            min-height: 100vh;
+        }
+
+        .wrapper_blue {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .Title_dont {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .custom-hr3 {
+            border-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .custom-hr2 {
+            border-color: #fff;
+            margin-top: 30px;
+        }
+
+        .btn-1 {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .btn-1:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-1e {
+            background-color: #fff;
+            color: #2c3e50;
+        }
+
+        .btn-1e:hover {
+            background-color: #ecf0f1;
+        }
+
+        .social-btn img {
+            height: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar (If applicable) -->
+
+    <div class="wrapper_lightblue d-flex justify-content-center align-items-center">
+        <div class="wrapper_blue">
+            <h2 class="Title_dont">Login to Your Account</h2>
+            <hr class="custom-hr3">
+
+            {% if form.errors %}
+            <div class="alert alert-danger text-center mb-4">Invalid username or password.</div>
+            {% endif %}
+
+            <form method="POST" class="mb-3">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-1 btn-1d w-100">Login</button>
+                <a href="/admin/" class="btn btn-outline-secondary w-100 mt-2">Login as Admin</a>
+            </form>
+
+            <p class="text-center mt-3">
+                Don't have an account? <a href="{% url 'account_signup' %}" class="text-white">Sign up here</a>
+            </p>
+
+            <hr class="custom-hr2">
+
+            <div class="text-center mt-4">
+                <a href="{% provider_login_url 'google' %}" class="btn btn-outline-light btn-1e w-100 social-btn">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                    Sign in with Google
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let loginAttempts = parseInt(sessionStorage.getItem('loginAttempts')) || 0;
+        const maxAttempts = 5;
+        const lockoutTime = 30000; // 30 seconds in milliseconds
+        const lastAttemptTime = parseInt(sessionStorage.getItem('lastAttemptTime')) || 0;
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const currentTime = Date.now();
+            console.log('Form submitted, login attempts:', loginAttempts);
+
+            if (loginAttempts >= maxAttempts) {
+                if (currentTime - lastAttemptTime < lockoutTime) {
+                    event.preventDefault();
+                    alert('Too many login attempts. Please wait 30 seconds before trying again.');
+                    const inputs = document.querySelectorAll('input');
+                    inputs.forEach(input => input.disabled = true);
+                    setTimeout(() => {
+                        loginAttempts = 0;
+                        sessionStorage.setItem('loginAttempts', loginAttempts);
+                        sessionStorage.setItem('lastAttemptTime', currentTime);
+                        inputs.forEach(input => input.disabled = false);
+                        alert('You can now try logging in again.');
+                    }, lockoutTime);
+                } else {
+                    loginAttempts = 0;
+                    sessionStorage.setItem('loginAttempts', loginAttempts);
+                    sessionStorage.setItem('lastAttemptTime', currentTime);
+                }
+            } else {
+                loginAttempts++;
+                sessionStorage.setItem('loginAttempts', loginAttempts);
+                sessionStorage.setItem('lastAttemptTime', currentTime);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

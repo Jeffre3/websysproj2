@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Serpent Market</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>About Serpent Market</h1>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'marketplace' %}">Marketplace</a>
+            <a href="{% url 'sell' %}">Sell</a>
+            <a href="{% url 'trade' %}">Trade</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Welcome to Serpent Market!</h2>
+        <p>Serpent Market is your one-stop online marketplace for buying, selling, and trading unique items. Whether you're looking to find rare collectibles, sell your pre-loved possessions, or trade items with others, we've got you covered.</p>
+        <p>Our mission is to create a friendly and secure environment where users can exchange goods, share experiences, and discover new items!</p>
+    </div>
+
+    <footer>
+        <p>© 2025 Serpent Market</p>
+    </footer>
+</body>
+</html>

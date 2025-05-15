@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sell an Item - Serpent Market</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .sell-hero {
+            background: linear-gradient(to right, #1e1e1e, #2b2b2b);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .sell-hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+
+        .sell-form-wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="file"],
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-top: 4px;
+        }
+
+        form textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        form button {
+            margin-top: 25px;
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a class="logo" href="{% url 'home' %}">Serpent Market</a>
+            <div class="mobile-menu">
+              <div class="line1"></div>
+              <div class="line2"></div>
+              <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+              <li><a href="{% url 'home' %}">Home</a></li>
+              <li><a href="{% url 'marketplace' %}">Marketplace</a></li>
+              <li><a href="{% url 'sell' %}">Sell</a></li>
+            
+              {% if user.is_authenticated %}
+                <li>
+                  <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                  <form id="logout-form" method="POST" action="{% url 'account_logout' %}" style="display: none;">
+                    {% csrf_token %}
+                  </form>
+                </li>
+              {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+              {% endif %}
+            </ul>
+      </header>
+
+<!-- Hero Section -->
+<section class="sell-hero">
+    <h1>Sell an Item</h1>
+    <p>List your snake gear for sale and reach other reptile keepers.</p>
+</section>
+
+<!-- Form Wrapper -->
+<section class="sell-form-wrapper wrapper_whiteshadow">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+ 
+    
+        <!-- This line is for dynamic form field rendering -->
+        {{ form.as_p }}
+    
+        <button type="submit" class="login-button">Sell Item</button>
+    </form>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 Serpent Market. All rights reserved.</p>
+</footer>
+
+<script src="{% static 'js/mobile-navbar.js' %}"></script>
+</body>
+</html>

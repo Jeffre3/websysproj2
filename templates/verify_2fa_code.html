@@ -1,0 +1,23 @@
+<!-- templates/verify_2fa_code.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter 2FA Code</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card p-4 shadow" style="width: 400px;">
+        <h4 class="mb-3">Enter the 2FA Code</h4>
+        
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="code" class="form-control mb-3" placeholder="Enter 6-digit code" required>
+            <button type="submit" class="btn btn-primary w-100">Verify Code</button>
+        </form>
+    </div>
+</body>
+</html>

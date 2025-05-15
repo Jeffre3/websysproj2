@@ -1,0 +1,429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Marketplace - Serpent Market</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://www.paypal.com/sdk/js?client-id=AYgvUfT1GEgxnwxO0VC8RU4xkAzHaC1IiDLs_Xv2QC79_eaVlPUGoH70ELkaumrqiHYIfiFjaiXVSG6P&currency=USD"></script>
+
+    <style>
+        .market-hero {
+            background: linear-gradient(to right, #1e1e1e, #2b2b2b);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .market-hero h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .market-hero p {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        .marketplace-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-header:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #4CAF50;
+            margin: 15px auto 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .recommendations-section {
+            background: #f8f9fa;
+            padding: 40px 0;
+            margin-bottom: 20px;
+        }
+
+        .all-products-section {
+            padding: 40px 0;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .product-info p {
+            margin: 5px 0;
+            color: #444;
+        }
+
+        .product-info .seller,
+        .product-info .condition {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .product-info .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+
+        .product-info button {
+            margin-top: auto;
+            padding: 10px 20px;
+            background: #1e1e1e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .product-info button:hover {
+            background: #2b2b2b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* PayPal Modal Styles */
+        #paypal-modal,
+        #login-required-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            animation: modalEnter 0.3s ease-out forwards;
+        }
+
+        @keyframes modalEnter {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #45a049;
+        }
+
+        .modal-content button.cancel {
+            background-color: #f44336;
+        }
+
+        .modal-content button.cancel:hover {
+            background-color: #e53935;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a class="logo" href="{% url 'home' %}">Serpent Market</a>
+        <div class="mobile-menu">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        <ul class="nav-list">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'marketplace' %}">Marketplace</a></li>
+            <li><a href="{% url 'sell' %}">Sell</a></li>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" method="POST" action="{% url 'account_logout' %}" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="market-hero">
+    <h1>Shop for Snakes</h1>
+    <p>Everything your reptilian companion needs, all in one place.</p>
+</section>
+
+<div class="marketplace-container">
+    <!-- Recommendations Section -->
+    {% if recommended_products %}
+    <section class="recommendations-section">
+        <div class="section-header">
+            <h2>Recommended for You</h2>
+            <p>Products we think you'll love based on your preferences</p>
+        </div>
+        <div class="product-grid">
+            {% for product in recommended_products %}
+            <div class="product-card">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'images/default-product.jpg' %}" alt="Default Image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p class="seller">Seller: {{ product.seller.username }}</p>
+                    <p class="condition">Condition: {{ product.condition }}</p>
+                    <p class="price">${{ product.price }}</p>
+                    <button class="btn btn-1 btn-1a" onclick="openPayPalModal('{{ product.id }}', '{{ product.price }}')">Buy Now</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- All Products Section -->
+    <section class="all-products-section">
+        <div class="section-header">
+            <h2>All Products</h2>
+            <p>Browse our complete collection of snake supplies and accessories</p>
+        </div>
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'images/default-product.jpg' %}" alt="Default Image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p class="seller">Seller: {{ product.seller.username }}</p>
+                    <p class="condition">Condition: {{ product.condition }}</p>
+                    <p class="price">${{ product.price }}</p>
+                    <button class="btn btn-1 btn-1a" onclick="openPayPalModal('{{ product.id }}', '{{ product.price }}')">Buy Now</button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <p>No products listed yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<!-- PayPal Modal -->
+<div id="paypal-modal">
+    <div class="modal-content">
+        <div id="paypal-button-container"></div>
+        <button onclick="closePayPalModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Login Required Modal -->
+<div id="login-required-modal">
+    <div class="modal-content">
+        <p>User Login is Required</p>
+        <button onclick="redirectToLogin()">OK</button>
+    </div>
+</div>
+
+<script src="{% static 'js/mobile-navbar.js' %}"></script>
+
+<!-- PayPal + Auth Logic -->
+<script>
+    let selectedProductId = null;
+
+    function openPayPalModal(productId, price) {
+        const userIsAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
+
+        if (userIsAuthenticated !== "true") {
+            const modal = document.getElementById("login-required-modal");
+            modal.style.display = "flex";
+
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = "{% url 'account_login' %}?next={% url 'marketplace' %}";
+            }, 10000); // Auto-close after 10 seconds
+            return;
+        }
+
+        selectedProductId = productId;
+        document.getElementById("paypal-modal").style.display = "flex";
+        document.getElementById("paypal-button-container").innerHTML = "";
+
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: price }
+                    }],
+                    application_context: {
+                        shipping_preference: "NO_SHIPPING",
+                        user_action: "PAY_NOW"
+                    }
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    fetch(`/purchase/${selectedProductId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCSRFToken()
+                        },
+                        body: JSON.stringify({ orderID: data.orderID })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert("Failed to process purchase.");
+                            closePayPalModal();
+                        }
+                    });
+                });
+            },
+            onCancel: function() {
+                closePayPalModal();
+            }
+        }).render('#paypal-button-container');
+    }
+
+    function closePayPalModal() {
+        document.getElementById("paypal-modal").style.display = "none";
+        document.getElementById("paypal-button-container").innerHTML = "";
+    }
+
+    function redirectToLogin() {
+        document.getElementById("login-required-modal").style.display = "none";
+        window.location.href = "{% url 'account_login' %}?next={% url 'marketplace' %}";
+    }
+
+    function getCSRFToken() {
+        const cookieValue = document.cookie.split('; ').find(row => row.startsWith('csrftoken'));
+        return cookieValue ? cookieValue.split('=')[1] : '';
+    }
+</script>
+
+<footer class="footer">
+    <p>&copy; 2025 Serpent Market. All rights reserved.</p>
+</footer>
+</body>
+</html>

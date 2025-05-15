@@ -1,0 +1,275 @@
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serpant Supply</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    
+    <header>
+        <nav>
+          <a class="logo" href="{% url 'home' %}">Serpent Market</a>
+          <div class="mobile-menu">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+          <ul class="nav-list">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'marketplace' %}">Marketplace</a></li>
+            <li><a href="{% url 'sell' %}">Sell</a></li>
+          
+            {% if user.is_authenticated %}
+              <li>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <form id="logout-form" method="POST" action="{% url 'account_logout' %}" style="display: none;">
+                  {% csrf_token %}
+                </form>
+              </li>
+            {% else %}
+              <li><a href="{% url 'account_login' %}">Login</a></li>
+            {% endif %}
+          </ul>
+          
+          
+          </ul>
+        </nav>
+      </header>
+    <div class="wrapper_whiteshadow">         
+      <section class="columns">
+        <a href="{% url 'marketplace' %}" class="btn btn-1 btn-1a">Shop Now</a>
+
+          <button class="btn btn-1 btn-1a" onclick="window.location.href='#About'">About</button>
+          <button class="btn btn-1 btn-1a" onclick="window.location.href='#FAQs'">FAQs</button>
+          <button class="btn btn-1 btn-1a" onclick="window.location.href='#Contact'">Contact Us</button>
+      </section>	
+    </div>
+    <div id="Shop">
+    <div class="container">
+      <div class="content">
+          <div class="text-section">
+            {% if user.is_authenticated %}
+            <h1>Welcome to SerpentMarket {{ user.username }},</h1>
+          {% else %}
+            <h1>Welcome to SerpentMarket Guest,</h1>
+          {% endif %}
+    </h1>
+    <p>
+        Connecting Snake Enthusiasts, Breeders, and Collectors—Building a Marketplace for Serpent-Related Products and Opportunities.
+    </p>
+    <a href="{% url 'marketplace' %}" class="login-button">Shop Now</a>
+
+</div>
+
+          <div class="image-section">
+              <img src="https://static.vecteezy.com/system/resources/previews/049/423/361/non_2x/a-bold-and-striking-blue-and-white-snake-logo-design-perfect-for-sports-teams-gaming-brands-or-any-organization-seeking-a-fierce-and-powerful-visual-free-vector.jpg"/>
+              <div class="decorative-elements">
+                  <div class="circle yellow"></div>
+                  <div class="circle blue"></div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+<div class="wrapper_blue">
+  
+      <h1 class="Title_dont">Don't have an account yet?</h1>
+  
+
+<section class="columns">
+  <div class="column">
+    <a class="btn btn-1 btn-1a" href="{% url 'account_signup' %}">Sign Up Now</a>
+    <div id="About">
+  </div>
+</section>	
+
+
+
+</div>
+
+<div class="wrapper_lightblue">
+    <h1 class="Title">What's in here?</h1>
+  
+    <section class="columns">
+      <div class="column">
+        <img src="https://cdn-icons-png.flaticon.com/512/9307/9307321.png" alt="Marketplace Icon">
+        <h2>Marketplace for Snake Enthusiasts</h2>
+        <p>Serpent Market connects hobbyists, breeders, and collectors in a single platform to buy and sell snake-related products like enclosures, food, handling tools, and more.</p>
+      </div>
+      
+      <div class="column">
+        <img src="https://cdn-icons-png.flaticon.com/256/1584/1584849.png" alt="Convenience Icon">
+        <h2>Safe and Hassle-Free Transactions</h2>
+        <p>With secure payment systems and verified listings, Serpent Market ensures a safe environment for both buyers and sellers to do business with confidence.</p>
+      </div>
+  
+      <div class="column">
+        <img src="https://cdn-icons-png.flaticon.com/512/5485/5485853.png" alt="Variety Icon">
+        <h2>Diverse Products and Trade Options</h2>
+        <p>Whether you're looking to buy, sell, or trade, Serpent Market offers everything from basic gear to exotic accessories — even live animals (with permits).</p>
+      </div>
+    </section>
+  </div>
+  
+
+
+<div id="FAQs">
+    <div class="wrapper_faq">
+      <h1 class="Title_faqs">Serpent Market FAQs</h1>
+      <ul class="list__faq">
+        <li>
+          <dt><input type="radio" name="rad-selected" />What is Serpent Market?</dt>
+          <dd>Serpent Market is an online platform where snake enthusiasts can buy, sell, and trade snake-related products — including enclosures, accessories, food, and more.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />How do I list an item for sale?</dt>
+          <dd>To sell an item, navigate to the "Sell" page, fill out the item form with a description, image, price, and condition, and submit it. Your listing will appear in the marketplace after approval.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />How do I buy an item?</dt>
+          <dd>Visit the Marketplace page, browse available items, and click "Buy Now" on any product you're interested in. You’ll be guided through a secure checkout process.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />Can I trade items instead of buying or selling?</dt>
+          <dd>Yes! Our Trade section allows users to offer an item in exchange for another. Just fill out the trade form with what you're offering and what you're looking for.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />Do I need a special license to sell live animals?</dt>
+          <dd>Yes, if you're selling live snakes or other reptiles, ensure you comply with local regulations and have the necessary permits. Serpent Market is not liable for unauthorized sales.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />Is it safe to make transactions on Serpent Market?</dt>
+          <dd>All transactions on Serpent Market are secured through trusted payment gateways. We also encourage users to verify listings and use secure communication for trades.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />What kinds of products are allowed?</dt>
+          <dd>We allow the sale of enclosures, heating pads, liners, feeding tools, decorative items, and more. Live animal sales are allowed only with proper documentation and approval.</dd>
+        </li>
+  
+        <li>
+          <dt><input type="radio" name="rad-selected" />Can I edit or delete my listing?</dt>
+          <dd>Yes, after logging in, go to your dashboard to manage your listings. You can update details or remove items that are no longer available.</dd>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+<div id="Contact">
+<div class="contact-us">
+    <h1 class="Title_contact" >Contact Us</h1>
+    <div class="contact-container">
+      <!-- Corporate Center -->
+      <div class="contact-card">
+        <div class="icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/3466/3466344.png" alt="Corporate Icon" />
+        </div>
+        <h3>Serpent Market Corporate Building:</h3>
+        <p>Technological Institute of the Philippines - Arlegui Campus, 1338 Arlegui St, Quiapo, Manila, 1001 Metro Manila</p>
+      </div>
+
+      <!-- Contact Center -->
+      <div class="contact-card">
+        <div class="icon">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png" alt="Phone Icon" />
+        </div>
+        <h3>Serpent Market Contact Center:</h3>
+        <p>Hotline: <a href="tel:+63288880000">(+632) 8888-0000</a></p>
+        <p>Outside Metro Manila (PLDT/Globelines): 
+          <a href="tel:#88880000">#8888-0000</a>
+        </p>
+      </div>
+
+      <!-- Email -->
+      <div class="contact-card">
+        <div class="icon">
+          <img src="https://e7.pngegg.com/pngimages/611/356/png-clipart-email-computer-icons-email-miscellaneous-blue-thumbnail.png" alt="Email Icon" />
+        </div>
+        <h3>Email:</h3>
+        <p><a href="mailto:callcenter@bdo.com.ph">mjlagunero@tip.edu.ph</a></p>
+        <p>This channel is dedicated to handling online banking enrollment and/or updating contact information for overseas clients.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+      <p>&copy; 2025 Serpent Market. All rights reserved.</p>
+  </footer>
+  <script>
+    class MobileNavbar {
+  constructor(mobileMenu, navList, navLinks) {
+    this.mobileMenu = document.querySelector(mobileMenu);
+    this.navList = document.querySelector(navList);
+    this.navLinks = document.querySelectorAll(navLinks);
+    this.activeClass = "active";
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleLinkClick = this.handleLinkClick.bind(this);
+  }
+
+  animateLinks() {
+    this.navLinks.forEach((link, index) => {
+      link.style.animation
+        ? (link.style.animation = "")
+        : (link.style.animation = `navLinkFade 0.5s ease forwards ${
+            index / 7 + 0.3
+          }s`);
+    });
+  }
+
+  handleClick() {
+    this.navList.classList.toggle(this.activeClass);
+    this.mobileMenu.classList.toggle(this.activeClass);
+    this.animateLinks();
+  }
+
+  handleLinkClick() {
+    this.navList.classList.remove(this.activeClass);
+    this.mobileMenu.classList.remove(this.activeClass);
+    this.animateLinks();
+  }
+
+  addClickEvent() {
+    this.mobileMenu.addEventListener("click", this.handleClick);
+    this.navLinks.forEach((link) =>
+      link.addEventListener("click", this.handleLinkClick)
+    );
+  }
+
+  init() {
+    if (this.mobileMenu) {
+      this.addClickEvent();
+    }
+    return this;
+  }
+}
+
+const mobileNavbar = new MobileNavbar(
+  ".mobile-menu",
+  ".nav-list",
+  ".nav-list li"
+);
+mobileNavbar.init();
+
+  </script>
+  
+  
+  <script>
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+  </script>
+
+  </body>
+</html>

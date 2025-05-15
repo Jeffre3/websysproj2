@@ -1,0 +1,165 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            max-width: 400px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline-light {
+            background-color: #fff;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #ecf0f1;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .alert-danger {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .social-btn img {
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .footer-link {
+            color: #fff;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h3 class="card-title">Sign Up</h3>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">Please correct the errors below.</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <div id="password-strength-container" class="form-group" style="display:none;">
+                <label for="password-strength" style="color:#fff;">Password strength:</label>
+                <div id="password-strength" style="height:8px; border-radius:4px; background:#ccc; margin-bottom:5px;"></div>
+                <span id="password-strength-text" style="font-size:14px;"></span>
+                <p style="font-size:12px; color:#fff; margin-top:5px;">To make your password strong, use at least 8 characters, including uppercase, lowercase, numbers, and special characters.</p>
+            </div>
+            <button type="submit" id="submit-button" class="btn btn-primary w-100" disabled>Sign Up</button>
+        </form>
+
+        <p class="mt-3 text-center">
+            Already have an account? <a href="{% url 'account_login' %}" class="footer-link">Login here</a>
+        </p>
+
+        <hr class="my-4" style="border-color: #fff;">
+
+        <div class="text-center">
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-light w-100 social-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                Sign in with Google
+            </a>
+        </div>
+    </div>
+
+</body>
+
+<script>
+// Find the password input (Django default: name="password1")
+document.addEventListener('DOMContentLoaded', function() {
+    var passwordInput = document.querySelector('input[type="password"][name*="password"]');
+    var strengthBar = document.getElementById('password-strength');
+    var strengthText = document.getElementById('password-strength-text');
+    var strengthContainer = document.getElementById('password-strength-container');
+    var submitButton = document.getElementById('submit-button');
+
+    if (passwordInput) {
+        strengthContainer.style.display = 'block';
+        passwordInput.addEventListener('input', function() {
+            var val = passwordInput.value;
+            var result = getPasswordStrength(val);
+            // Update bar
+            strengthBar.style.width = result.percent + '%';
+            strengthBar.style.background = result.color;
+            // Update text
+            strengthText.textContent = result.text;
+            strengthText.style.color = result.color;
+            // Enable/disable submit button based on password strength
+            submitButton.disabled = result.text !== 'Strong';
+        });
+    }
+
+    function getPasswordStrength(password) {
+        let score = 0;
+        if (!password) return { percent: 0, color: '#ccc', text: '' };
+        if (password.length >= 8) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/[a-z]/.test(password)) score++;
+        if (/[0-9]/.test(password)) score++;
+        if (/[^A-Za-z0-9]/.test(password)) score++;
+
+        if (score <= 2) {
+            return { percent: 33, color: '#e74c3c', text: 'Weak' };
+        } else if (score === 3 || score === 4) {
+            return { percent: 66, color: '#f1c40f', text: 'Medium' };
+        } else {
+            return { percent: 100, color: '#2ecc71', text: 'Strong' };
+        }
+    }
+});
+</script>
+
+</html>
